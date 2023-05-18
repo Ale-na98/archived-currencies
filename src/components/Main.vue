@@ -79,7 +79,7 @@
                             <div class="col-lg-3 py-2">
                                 Currency exchange rate for 1 unit:
                             </div>
-                            <div class="col-lg-1 py-2">
+                            <div class="col-lg-3 py-2">
                                 <strong>0,055 PLN</strong>
                             </div>
                         </div>
