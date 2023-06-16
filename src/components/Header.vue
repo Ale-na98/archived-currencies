@@ -1,9 +1,19 @@
 <template>
-    <header class="navbar navbar-expand-lg">
-        <div class="nav-container container">
-            <div class="navbar-title">
-                <span>ARCHIVED CURRENCIES RATE</span>
-            </div>
+    <header class="navbar">
+        <div class="container py-2">
+            <span class="navbar-heading">ARCHIVED EXCHANGE RATES</span>
         </div>
     </header>
 </template>
+
+<style>
+.navbar {
+    background-color: #152e52;
+}
+
+.navbar-heading {
+    color: #bdad7d;
+    font-size: 26px;
+    font-weight: 500;
+}
+</style>
