@@ -1,5 +1,5 @@
 {
-    "name": "archived-currencies",
+    "name": "archived-exchange-rates",
     "version": "0.1.0",
     "private": true,
     "scripts": {
