@@ -11,7 +11,9 @@
     "dependencies": {
         "bootstrap": "^5.2.3",
         "core-js": "^3.6.4",
-        "vue": "^2.6.11"
+        "primevue": "^2.10.1",
+        "vue": "^2.6.11",
+        "vue-select": "^3.20.2"
     },
     "devDependencies": {
         "@vue/cli-plugin-babel": "~4.2.0",

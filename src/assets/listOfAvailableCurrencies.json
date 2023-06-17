@@ -1,0 +1,132 @@
+{
+  "currencies": [
+    {
+      "isoCode": "AFN",
+      "displayName": "AFN - afgani (Afganistan)"
+    },
+    {
+      "isoCode": "MGA",
+      "displayName": "MGA - ariary (Madagaskar)"
+    },
+    {
+      "isoCode": "PAB",
+      "displayName": "PAB - balboa (Panama)"
+    },
+    {
+      "isoCode": "ETB",
+      "displayName": "ETB - birr etiopski"
+    },
+    {
+      "isoCode": "VES",
+      "displayName": "VES - boliwar soberano (Wenezuela)"
+    },
+    {
+      "isoCode": "BOB",
+      "displayName": "BOB - boliwiano (Boliwia)"
+    },
+    {
+      "isoCode": "CRC",
+      "displayName": "CRC - colon kostarykański"
+    },
+    {
+      "isoCode": "SVC",
+      "displayName": "SVC - colon salwadorski"
+    },
+    {
+      "isoCode": "NIO",
+      "displayName": "NIO - cordoba oro (Nikaragua)"
+    },
+    {
+      "isoCode": "GMD",
+      "displayName": "GMD - dalasi (Gambia)"
+    },
+    {
+      "isoCode": "MKD",
+      "displayName": "MKD - denar (Macedonia Północna)"
+    },
+    {
+      "isoCode": "DZD",
+      "displayName": "DZD - dinar algierski"
+    },
+    {
+      "isoCode": "BHD",
+      "displayName": "BHD - dinar bahrajski"
+    },
+    {
+      "isoCode": "IQD",
+      "displayName": "IQD - dinar iracki"
+    },
+    {
+      "isoCode": "JOD",
+      "displayName": "JOD - dinar jordański"
+    },
+    {
+      "isoCode": "KWD",
+      "displayName": "KWD - dinar kuwejcki"
+    },
+    {
+      "isoCode": "LYD",
+      "displayName": "LYD - dinar libijski"
+    },
+    {
+      "isoCode": "RSD",
+      "displayName": "RSD - dinar serbski"
+    },
+    {
+      "isoCode": "TND",
+      "displayName": "TND - dinar tunezyjski"
+    },
+    {
+      "isoCode": "MAD",
+      "displayName": "MAD - dirham marokański"
+    },
+    {
+      "isoCode": "AED",
+      "displayName": "AED - dirham ZEA (Zjednoczone Emiraty Arabskie)"
+    },
+    {
+      "isoCode": "STN",
+      "displayName": "STN - dobra (Wyspy Św. Tomasza i Książęca)"
+    },
+    {
+      "isoCode": "BSD",
+      "displayName": "BSD - dolar bahamski"
+    },
+    {
+      "isoCode": "BBD",
+      "displayName": "BBD - dolar barbadoski"
+    },
+    {
+      "isoCode": "BZD",
+      "displayName": "BZD - dolar belizeński"
+    },
+    {
+      "isoCode": "BND",
+      "displayName": "BND - dolar brunejski"
+    },
+    {
+      "isoCode": "FJD",
+      "displayName": "FJD - dolar Fidżi"
+    },
+    {
+      "isoCode": "GYD",
+      "displayName": "GYD - dolar gujański"
+    },
+    {
+      "isoCode": "JMD",
+      "displayName": "JMD - dolar jamajski"
+    },
+    {
+      "isoCode": "LRD",
+      "displayName": "LRD - dolar liberyjski"
+    },
+    {
+      "isoCode": "NAD",
+      "displayName": "NAD - dolar namibijski"
+    },
+    {
+      "isoCode": "SRD",
+      "displayName": "SRD - dolar surinamski"
+    }
+  ]
+}

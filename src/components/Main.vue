@@ -20,68 +20,128 @@
                 </p>
             </div>
         </article>
-        <div class="container py-3">
-            <div class="row">
-                <form class="search-data" method="POST" name="post_from_date">
-                    <div class="row align-items-end">
-                        <div class="col-lg-3 py-2">
-                            <label for="currency-select"> Choose the currency:</label>
-                            <select class="form-select" id="currency-select" name="currency-select">
-                                <option value="currency-1"> 1</option>
-                                <option value="currency-2"> 2</option>
-                            </select>
+        <article class="row justify-content-between my-4">
+            <section class="col-md-4">
+                <div class="card mb-4">
+                    <form class="card-body d-flex flex-column" v-on:submit.prevent="getCurrencyRate">
+                        <div class="mb-1">
+                            <label class="mb-1" for="currency-select"> Select the currency:</label>
+                            <v-select :options="listOfDisplayNames" label="displayName"
+                                :reduce="currency => currency.isoCode" v-model="input.isoCode" :clearable="false"
+                                placeholder="Please select the currency..." @input="resultState = ResultStateEnum.Initial">
+                                <template #search="{ attributes, events }">
+                                    <input class="vs__search" :required="!input.isoCode" v-bind="attributes"
+                                        v-on="events" />
+                                </template>
+                            </v-select>
                         </div>
-                        <div class="col-lg-3 py-2">
-                            <label for="date-select"> Enter the transaction date:</label>
-                            <input class="form-control" type="date" />
+                        <div class="my-1">
+                            <label class="mb-1"> Enter the amount:</label>
+                            <InputNumber inputClass="form-control" v-model.number="input.amount" :minFractionDigits="2"
+                                :maxFractionDigits="5" :min="1" placeholder="Enter the amount..." />
                         </div>
-                        <div class="col-lg-1 py-2 text-center">
-                            <button class="btn btn-secondary" type="submit">Search</button>
+                        <div class="my-1">
+                            <label class="mb-1"> Enter the transaction date:</label>
+                            <input class="form-control" type="date" v-model="input.transactionDate" required />
                         </div>
+                        <div class="mt-3">
+                            <div class="d-flex justify-content-between">
+                                <button type="reset" class="btn btn-secondary" @click="reset">Reset</button>
+                                <button type="submit" class="btn btn-submit">Submit</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </section>
+            <article class="my-3">
+                <div class="row align-items-center">
+                    <div class="col-lg-3 py-2">
+                        The nearest date preceding the transaction:
                     </div>
-                </form>
-                <article class="my-3">
-                    <div class="row align-items-center">
-                        <div class="col-lg-3 py-2">
-                            The nearest date preceding the transaction:
-                        </div>
-                        <div class="col-lg-1 py-2 ">
-                            <strong>12.05.2022</strong>
-                        </div>
+                    <div class="col-lg-1 py-2 ">
+                        <strong>12.05.2022</strong>
                     </div>
-                    <div class="row align-items-center">
-                        <div class="col-lg-3 py-2">
-                            Currency exchange rate for 1 unit:
-                        </div>
-                        <div class="col-lg-3 py-2">
-                            <strong>0,055 PLN</strong>
-                        </div>
+                </div>
+                <div class="row align-items-center">
+                    <div class="col-lg-3 py-2">
+                        Currency exchange rate for 1 unit:
                     </div>
-                    <div class="row align-items-center">
-                        <div class="col-lg-3 py-2">
-                            Official archive on the entered date:
-                        </div>
-                        <div class="col-lg-1 py-2">
-                                <a
-                                    href="/">Link</a>
-                        </div>
+                    <div class="col-lg-3 py-2">
+                        <strong>0,055 PLN</strong>
                     </div>
-                </article>
-            </div>
-        </div>
+                </div>
+                <div class="row align-items-center">
+                    <div class="col-lg-3 py-2">
+                        Official archive on the entered date:
+                    </div>
+                    <div class="col-lg-1 py-2">
+                        <a href="/">Link</a>
+                    </div>
+                </div>
+            </article>
+        </article>
     </main>
 </template>
 
 <script>
-import 'bootstrap/js/dist/collapse'
+import 'bootstrap/js/dist/collapse';
+import Vue from "vue";
+import VueSelect from "vue-select";
+import "vue-select/dist/vue-select.css";
+import json from '../assets/listOfAvailableCurrencies.json';
+import PrimeVue from 'primevue/config';
+import InputNumber from 'primevue/inputnumber';
+
+Vue.component("v-select", VueSelect);
+Vue.use(PrimeVue);
+Vue.component("InputNumber", InputNumber);
 
 export default {
     data() {
         return {
-            showDisclaimer: true
+            showDisclaimer: true,
+
+            input: {
+                amount: 1,
+                isoCode: null,
+                transactionDate: null,
+            },
+
+            currency: {
+                quantity: null,
+                rateDate: null,
+                rate: null,
+                link: null
+            }
+        }
+    },
+    computed: {
+        listOfDisplayNames() {
+            let list = [];
+            json.currencies.forEach(element => {
+                list.push(element);
+            })
+            return list;
+        }
+    },
+    methods: {
+        async getCurrencyRate() {
+            let url = new URL("/api/CurrencyRateProvider");
+            const params = { isoCode: this.input.isoCode, transactionDate: this.input.transactionDate };
+            url.search = new URLSearchParams(params);
+            const response = await fetch(url);
+            const data = await response.json();
+
+            this.currency.quantity = data.Quantity;
+            this.currency.rateDate = data.RateDate;
+            this.currency.rate = data.Rate;
+            this.currency.link = data.Link;
+        },
+        reset() {
+            this.input.isoCode = null;
         }
     }
-}
+};
 </script>
 
 <style>
@@ -127,5 +187,56 @@ export default {
     font-weight: bold;
     --bs-link-color: #664d03;
     --bs-link-hover-color: var(--bs-dark);
+}
+
+.vs__selected-options {
+    flex-wrap: nowrap;
+    max-width: calc(100% - 25px);
+    padding: 0;
+}
+
+.vs__selected {
+    display: block;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    max-width: 100%;
+    overflow: hidden;
+    margin: 0;
+    padding: 0;
+}
+
+.vs__dropdown-toggle {
+    justify-content: space-between;
+    padding: .375rem .75rem;
+    border-radius: .375rem;
+    border: 1px solid #ced4da;
+}
+
+.vs__search {
+    margin: 0;
+    padding: 0;
+}
+
+.vs__search:focus {
+    margin: 0;
+    padding: 0;
+}
+
+.p-inputnumber {
+    display: block;
+}
+
+.card .btn-submit {
+    --bs-btn-color: #fff;
+    --bs-btn-bg: #244a7c;
+    --bs-btn-border-color: #244a7c;
+    --bs-btn-hover-color: #fff;
+    --bs-btn-hover-bg: #152e52;
+    --bs-btn-hover-border-color: #152e52;
+    --bs-btn-focus-shadow-rgb: 130, 138, 145;
+    --bs-btn-active-color: #fff;
+    --bs-btn-active-bg: #152e52;
+    --bs-btn-active-border-color: #152e52;
+    --bs-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
 }
 </style>
