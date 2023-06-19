@@ -88,7 +88,7 @@
                     <div class="divider"></div>
                     <div class="d-flex align-items-center my-2">
                         <div class="col-5 col-sm-6 col-md-5 col-lg-6" title="The nearest date preceding the transaction">
-                            Data:
+                            Date:
                         </div>
                         <div class="col">
                             <strong>{{ currency.rateDate }}</strong>
@@ -96,7 +96,7 @@
                     </div>
                     <div class="d-flex align-items-center my-2">
                         <div class="col-5 col-sm-6 col-md-5 col-lg-6">
-                            Kurs wymiany:
+                            Rate:
                         </div>
                         <div class="col">
                             <strong>{{ currency.quantity }} {{ input.isoCode }} = {{ currency.rate }} PLN</strong>
@@ -104,7 +104,7 @@
                     </div>
                     <div class="d-flex align-items-center my-2">
                         <div class="col-5 col-sm-6 col-md-5 col-lg-6">
-                            Kwota waluty:
+                            Amount:
                         </div>
                         <div class="col">
                             <strong>{{ makeDecimal(input.amount, 4) }} {{ input.isoCode }}</strong>
@@ -112,7 +112,7 @@
                     </div>
                     <div class="d-flex align-items-center my-2">
                         <div class="col-5 col-sm-6 col-md-5 col-lg-6">
-                            Kwota po przeliczeniu:
+                            Amount after calculation:
                         </div>
                         <div class="col">
                             <strong>{{ calculate() }} PLN</strong>
