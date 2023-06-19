@@ -193,7 +193,7 @@ export default {
     },
     methods: {
         async getCurrencyRate() {
-            let url = new URL("http://localhost:7071/api/CurrencyRateProvider");
+            let url = new URL("/api/CurrencyRateProvider");
             const params = { isoCode: this.input.isoCode, transactionDate: this.input.transactionDate };
             url.search = new URLSearchParams(params);
             const response = await fetch(url);
