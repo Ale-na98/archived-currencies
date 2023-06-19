@@ -53,32 +53,95 @@
                     </form>
                 </div>
             </section>
-            <article class="my-3">
-                <div class="row align-items-center">
-                    <div class="col-lg-3 py-2">
-                        The nearest date preceding the transaction:
+            <section class="col search-result" v-if="isInitialState(resultState)">
+                <div class="card justify-content-between result-card">
+                    <h4>How to use this site</h4>
+                    <div class="divider"></div>
+                    <p class="mb-2">
+                        This service allows you to find out the exchange rates of currencies in relation to polish zloty
+                        (PLN), which are not available in the
+                        <a href="https://www.podatki.gov.pl/kalkulatory-podatkowe/kalkulator-walut/">
+                            official currency calculator
+                        </a>. However, the exchange rates of such currencies can be found on the
+                        <a href="https://nbp.pl">
+                            NBP website
+                        </a> in the section with
+                        <a href="https://nbp.pl/statystyka-i-sprawozdawczosc/kursy/archiwum-kursow-srednich-tabela-b/">
+                            archived exchange rates
+                        </a>.
+                    </p>
+                    <p class="mb-3">
+                        To find out the
+                        <a href="https://www.podatki.gov.pl/pit/twoj-e-pit/pit-38-za-2022/#przeliczenie-z-walut-obcych">
+                            exchange rate for the last working day preceding the day of receipt of income
+                        </a>, select the currency and the date of receipt of income.
+                    </p>
+                    <p class="fs-6 mb-0">
+                        <strong>Attention!</strong> For these currencies, NBP publishes the average exchange rate not
+                        per day (as, for example, for the dollar or euro), but per week (4-5 rates per month).
+                    </p>
+                </div>
+            </section>
+            <section class="col search-result" v-else-if="isResultFoundState(resultState)">
+                <div class="col card justify-content-between result-card">
+                    <h4>Result</h4>
+                    <div class="divider"></div>
+                    <div class="d-flex align-items-center my-2">
+                        <div class="col-5 col-sm-6 col-md-5 col-lg-6" title="The nearest date preceding the transaction">
+                            Data:
+                        </div>
+                        <div class="col">
+                            <strong>{{ currency.rateDate }}</strong>
+                        </div>
                     </div>
-                    <div class="col-lg-1 py-2 ">
-                        <strong>12.05.2022</strong>
+                    <div class="d-flex align-items-center my-2">
+                        <div class="col-5 col-sm-6 col-md-5 col-lg-6">
+                            Kurs wymiany:
+                        </div>
+                        <div class="col">
+                            <strong>{{ currency.quantity }} {{ input.isoCode }} = {{ currency.rate }} PLN</strong>
+                        </div>
+                    </div>
+                    <div class="d-flex align-items-center my-2">
+                        <div class="col-5 col-sm-6 col-md-5 col-lg-6">
+                            Kwota waluty:
+                        </div>
+                        <div class="col">
+                            <strong>{{ makeDecimal(input.amount, 4) }} {{ input.isoCode }}</strong>
+                        </div>
+                    </div>
+                    <div class="d-flex align-items-center my-2">
+                        <div class="col-5 col-sm-6 col-md-5 col-lg-6">
+                            Kwota po przeliczeniu:
+                        </div>
+                        <div class="col">
+                            <strong>{{ calculate() }} PLN</strong>
+                        </div>
+                    </div>
+                    <div class="d-flex align-items-center my-2">
+                        <div class="col">
+                            Please find the official exchange rate by the <a :href="currency.link">link</a>.
+                        </div>
                     </div>
                 </div>
-                <div class="row align-items-center">
-                    <div class="col-lg-3 py-2">
-                        Currency exchange rate for 1 unit:
-                    </div>
-                    <div class="col-lg-3 py-2">
-                        <strong>0,055 PLN</strong>
+            </section>
+            <section class="col search-result" v-else-if="isResultNotFoundState(resultState)">
+                <div class="col card result-card">
+                    <h4>Result</h4>
+                    <div class="divider"></div>
+                    <div class="alert alert-primary d-flex align-items-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="bi flex-shrink-0 me-2" width="16" height="16"
+                            role="img" aria-label="Info:">
+                            <path
+                                d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm.93-9.412-1 4.705c-.07.34.029.533.304.533.194 0 .487-.07.686-.246l-.088.416c-.287.346-.92.598-1.465.598-.703 0-1.002-.422-.808-1.319l.738-3.468c.064-.293.006-.399-.287-.47l-.451-.081.082-.381 2.29-.287zM8 5.5a1 1 0 1 1 0-2 1 1 0 0 1 0 2z" />
+                        </svg>
+                        <p class="m-0">
+                            Sorry, there is no information about exchange rate for selected currency:
+                            <strong>{{ input.isoCode }}</strong>.
+                        </p>
                     </div>
                 </div>
-                <div class="row align-items-center">
-                    <div class="col-lg-3 py-2">
-                        Official archive on the entered date:
-                    </div>
-                    <div class="col-lg-1 py-2">
-                        <a href="/">Link</a>
-                    </div>
-                </div>
-            </article>
+            </section>
         </article>
     </main>
 </template>
@@ -91,6 +154,7 @@ import "vue-select/dist/vue-select.css";
 import json from '../assets/listOfAvailableCurrencies.json';
 import PrimeVue from 'primevue/config';
 import InputNumber from 'primevue/inputnumber';
+import ResultStateEnum from "../enums/ResultStateEnum";
 
 Vue.component("v-select", VueSelect);
 Vue.use(PrimeVue);
@@ -100,6 +164,9 @@ export default {
     data() {
         return {
             showDisclaimer: true,
+
+            ResultStateEnum,
+            resultState: ResultStateEnum.Initial,
 
             input: {
                 amount: 1,
@@ -126,19 +193,41 @@ export default {
     },
     methods: {
         async getCurrencyRate() {
-            let url = new URL("/api/CurrencyRateProvider");
+            let url = new URL("http://localhost:7071/api/CurrencyRateProvider");
             const params = { isoCode: this.input.isoCode, transactionDate: this.input.transactionDate };
             url.search = new URLSearchParams(params);
             const response = await fetch(url);
             const data = await response.json();
 
-            this.currency.quantity = data.Quantity;
-            this.currency.rateDate = data.RateDate;
-            this.currency.rate = data.Rate;
-            this.currency.link = data.Link;
+            if (!Object.keys(data).length) {
+                this.resultState = ResultStateEnum.ResultNotFound;
+            } else {
+                this.currency.quantity = data.Quantity;
+                this.currency.rateDate = data.RateDate;
+                this.currency.rate = data.Rate;
+                this.currency.link = data.Link;
+
+                this.resultState = ResultStateEnum.ResultFound;
+            }
+        },
+        calculate() {
+            return this.makeDecimal((this.input.amount * (this.currency.rate / this.currency.quantity)), 2);
+        },
+        makeDecimal(number, fractionDigits) {
+            return Number.parseFloat(number).toFixed(fractionDigits);
         },
         reset() {
             this.input.isoCode = null;
+            this.resultState = ResultStateEnum.Initial;
+        },
+        isInitialState(resultState) {
+            return resultState === ResultStateEnum.Initial;
+        },
+        isResultFoundState(resultState) {
+            return resultState === ResultStateEnum.ResultFound;
+        },
+        isResultNotFoundState(resultState) {
+            return resultState === ResultStateEnum.ResultNotFound;
         }
     }
 };
@@ -238,5 +327,34 @@ export default {
     --bs-btn-active-bg: #152e52;
     --bs-btn-active-border-color: #152e52;
     --bs-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+}
+
+.search-result {
+    display: flex;
+    justify-content: center;
+    font-size: 17px;
+}
+
+.result-card {
+    --bs-card-border-width: 0;
+    padding: 0.75rem;
+    margin-bottom: 1.5rem;
+}
+
+.result-card a {
+    font-weight: bold;
+    --bs-link-color: var(--bs-dark);
+    --bs-link-hover-color: #244a7c;
+}
+
+.divider {
+    width: 100%;
+    opacity: .5;
+    border-bottom: 2px solid #152e52;
+    margin-bottom: 0.5rem;
+}
+
+.bi {
+    fill: currentColor;
 }
 </style>
