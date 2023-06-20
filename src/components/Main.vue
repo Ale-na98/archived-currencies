@@ -16,7 +16,14 @@
             </header>
             <div class="content-disclaimer collapse show" id="collapseDisclaimer">
                 <p class="my-0">
-                    Disclaimer body
+                    Archived Exchange Rates is not registred investment, legal or tax advisor or a
+                    broker/dealer. All rate options were taken from the
+                    <a href="https://nbp.pl/statystyka-i-sprawozdawczosc/kursy/archiwum-kursow-srednich-tabela-b/">
+                        Narodowy Bank Polski, Table B
+                    </a>
+                    and aggregated for personal purposes for a faster calculating the tax on foreign income.
+                    Although best efforts are made to ensure that all rates are accurate and up to date, occasionally
+                    unintended errors and misprints may occur.
                 </p>
             </div>
         </article>
