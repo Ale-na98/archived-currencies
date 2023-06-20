@@ -120,7 +120,8 @@
                     </div>
                     <div class="d-flex align-items-center my-2">
                         <div class="col">
-                            Please find the official exchange rate by the <a :href="currency.link">link</a>.
+                            Please find the official exchange rate by the
+                            <a :href="currency.link" target="_blank" rel="noopener noreferrer">link</a>.
                         </div>
                     </div>
                 </div>
