@@ -37,8 +37,8 @@
                         </div>
                         <div class="my-1">
                             <label class="mb-1"> Enter the amount:</label>
-                            <InputNumber inputClass="form-control" v-model.number="input.amount" :minFractionDigits="2"
-                                :maxFractionDigits="5" :min="1" placeholder="Enter the amount..." />
+                            <InputNumber inputClass="form-control" v-model="input.amount" :minFractionDigits="2"
+                                :maxFractionDigits="5" placeholder="Enter the amount..." />
                         </div>
                         <div class="my-1">
                             <label class="mb-1"> Enter the transaction date:</label>
@@ -209,6 +209,9 @@ export default {
             }
         },
         calculate() {
+            if (this.input.amount === null) {
+                this.input.amount = 1;
+            }
             return this.makeDecimal((this.input.amount * (this.currency.rate / this.currency.quantity)), 2);
         },
         makeDecimal(number, fractionDigits) {
@@ -216,6 +219,7 @@ export default {
         },
         reset() {
             this.input.isoCode = null;
+            this.input.amount = 1;
             this.resultState = ResultStateEnum.Initial;
         },
         isInitialState(resultState) {
