@@ -202,18 +202,38 @@ export default {
     methods: {
         async getCurrencyRate() {
             const params = { isoCode: this.input.isoCode, transactionDate: this.input.transactionDate };
-            const response = await fetch("/api/CurrencyRateProvider?" + new URLSearchParams(params));
-            const data = await response.json();
+            const request = "/api/CurrencyRateProvider?" + new URLSearchParams(params);
 
-            if (!Object.keys(data).length) {
-                this.resultState = ResultStateEnum.ResultNotFound;
+            const cache = await caches.open("app-cache");
+            const cacheKey = "v1 " + new URLSearchParams(params);
+            const cachedResponse = await cache.match(cacheKey);
+
+            if (cachedResponse === undefined) {
+                const response = await fetch(request);
+                const data = await response.json();
+                cache.put(cacheKey, new Response(JSON.stringify(data)));
+                if (!Object.keys(data).length) {
+                    this.resultState = ResultStateEnum.ResultNotFound;
+                } else {
+                    this.currency.quantity = data.Quantity;
+                    this.currency.rateDate = data.RateDate;
+                    this.currency.rate = data.Rate;
+                    this.currency.link = data.Link;
+
+                    this.resultState = ResultStateEnum.ResultFound;
+                }
             } else {
-                this.currency.quantity = data.Quantity;
-                this.currency.rateDate = data.RateDate;
-                this.currency.rate = data.Rate;
-                this.currency.link = data.Link;
+                const cachedData = await cachedResponse.json();
+                if (!Object.keys(cachedData).length) {
+                    this.resultState = ResultStateEnum.ResultNotFound;
+                } else {
+                    this.currency.quantity = cachedData.Quantity;
+                    this.currency.rateDate = cachedData.RateDate;
+                    this.currency.rate = cachedData.Rate;
+                    this.currency.link = cachedData.Link;
 
-                this.resultState = ResultStateEnum.ResultFound;
+                    this.resultState = ResultStateEnum.ResultFound;
+                }
             }
         },
         calculate() {
