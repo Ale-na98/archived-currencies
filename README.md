@@ -1,31 +1,17 @@
-# Vue Basic
+# Archived Exchange Rates (under development)
 
-[Azure Static Web Apps](https://docs.microsoft.com/azure/static-web-apps/overview) allows you to easily build [Vue.js](https://vuejs.org/) apps in minutes. Use this repo with the [Vue quickstart](https://docs.microsoft.com/azure/static-web-apps/getting-started?tabs=vue) to build and customize a new static site.
+Based on Azure Static Web App, this service allows to find out the exchange rates of currencies in relation to Polish Zloty (PLN), which are not available on the [official currency calculator](https://www.podatki.gov.pl/kalkulatory-podatkowe/kalkulator-walut/).
 
-## Project setup
+However, the exchange rates of such currencies can be found on the [Narodowy Bank Polski (NBP)](https://nbp.pl/statystyka-i-sprawozdawczosc/kursy/archiwum-kursow-srednich-tabela-b/) website in the section with archived exchange rates.
 
-```bash
-npm install
-```
+**Attention!** For these currencies, NBP publishes the average exchange rate not per day (as, for example, for the dollar or euro), but per week (4-5 rates per month).
 
-### Compiles and hot-reloads for development
+## Disclaimer
+> Archived Exchange Rates service is not registred investment, legal or tax advisor or a broker/dealer. All rate options were taken from the [Narodowy Bank Polski, Table B](https://nbp.pl/statystyka-i-sprawozdawczosc/kursy/archiwum-kursow-srednich-tabela-b/) and aggregated for personal purposes for a faster calculating the tax on foreign income. Although best efforts are made to ensure that all rates are accurate and up to date, occasionally unintended errors and misprints may occur.
 
-```bash
-npm run serve
-```
+Link to the service: [https://orange-ocean-0a7dad203.3.azurestaticapps.net](https://orange-ocean-0a7dad203.3.azurestaticapps.net).
 
-### Compiles and minifies for production
+## Current status
 
-```bash
-npm run build
-```
-
-### Lints and fixes files
-
-```bash
-npm run lint
-```
-
-### Customize configuration
-
-See [Configuration Reference](https://cli.vuejs.org/config/).
+- Only 4 currencies are available in the selector (data is taken from test database).
+- During the development, the official public Web API of NBP was discovered. Therefore, in the near future, the application API and database will be replaced by requests to the official API directly from the client.
